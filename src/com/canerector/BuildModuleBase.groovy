@@ -12,7 +12,7 @@ abstract class BuildModuleBase{
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
 		pipeline.echo "HELLO"
 		
-		pipeline.slack.sendMessage(message, color, channel)
+		pipeline.slack1.sendMessage(message, color, channel)
 		
 		pipeline.echo "HELLO"
 	}

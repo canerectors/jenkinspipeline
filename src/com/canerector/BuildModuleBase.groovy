@@ -2,6 +2,7 @@ package com.canerector
 
 abstract class BuildModuleBase{
 
+	@NonCPS
 	def pipeline
 	
 	BuildModuleBase(pipeline){ this.pipeline = pipeline }
@@ -52,6 +53,12 @@ abstract class BuildModuleBase{
 			
 			//pipeline.bat 'git checkout %BRANCH_NAME% && git pull'
 			//pipeline.bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
+		}
+	}
+	
+	def nugetRestore(){
+		stage('Nuget Restore') {
+			pipeline.nuget.restore()
 		}
 	}
 	

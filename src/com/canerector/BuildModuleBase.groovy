@@ -20,7 +20,7 @@ abstract class BuildModuleBase{
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		
-		timestamps{
+		pipeline.timestamps{
 			try{
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)		
 	

@@ -1,3 +1,4 @@
+@NonCPS
 def sendMessage(message, color = 'good', channel = '#builds') {
     node{
 		withCredentials([string(credentialsId: 'slack-key', variable: 'TOKEN')]) {            

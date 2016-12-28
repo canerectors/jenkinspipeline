@@ -2,7 +2,7 @@ package com.canerector
 
 abstract class BuildModuleBase{
 
-	@NonCPS
+	
 	def pipeline
 	
 	BuildModuleBase(pipeline){ this.pipeline = pipeline }
@@ -13,6 +13,7 @@ abstract class BuildModuleBase{
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
 
+	@NonCPS
 	def performBuild(){
 	
 		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace('/' + pipeline.env.BRANCH_NAME, '')
@@ -40,8 +41,10 @@ abstract class BuildModuleBase{
 		}
 	}
 	
+	@NonCPS
 	abstract def performBuildInternal()
 	
+	@NonCPS
 	def checkout(){
 	
 		pipeline.stage('Checkout') {
@@ -56,12 +59,14 @@ abstract class BuildModuleBase{
 		}
 	}
 	
+	@NonCPS
 	def nugetRestore(){
-		stage('Nuget Restore') {
+		pipeline.stage('Nuget Restore') {
 			pipeline.nuget.restore()
 		}
 	}
 	
+	@NonCPS
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
 		pipeline.echo slackFormattedBuildUrl + ' ' + message
 		

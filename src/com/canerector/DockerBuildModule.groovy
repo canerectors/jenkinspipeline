@@ -4,6 +4,6 @@ package com.canerector
 class DockerBuildModule extends BuildModuleBase {
 		
 	def performBuild(){
-		sendSlackMessage('building...')
+		//sendSlackMessage('building...')
 	}
 }

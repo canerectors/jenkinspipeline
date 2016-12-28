@@ -14,11 +14,11 @@ abstract class BuildModuleBase{
 
 	def performBuild(){
 	
-		projectName = "${JOB_NAME}".replace('canerectors/', '').replace("/${BRANCH_NAME}", '')
-		projectBranchName = projectName + ':' + "${BRANCH_NAME}";
-		gitHubUrl = pipeline.github.getProjectUrl(projectName, "${BRANCH_NAME}")
+		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace("/${BRANCH_NAME}", '')
+		projectBranchName = projectName + ':' + pipeline.env.BRANCH_NAME
+		gitHubUrl = pipeline.github.getProjectUrl(projectName, pipeline.env.BRANCH_NAME)
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
-		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl("${BUILD_URL}", 'Build #' + "${BUILD_NUMBER}")
+		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		
 		timestamps{
 			try{
@@ -30,7 +30,7 @@ abstract class BuildModuleBase{
 		
 				print err
 		
-				consoleUrl = pipeline.slack.getMessageStringForUrl("${BUILD_URL}console", 'Build Log.')		
+				consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
 				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
 		

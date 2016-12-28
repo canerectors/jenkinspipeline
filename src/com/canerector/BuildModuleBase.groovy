@@ -8,6 +8,7 @@ abstract class BuildModuleBase{
 
 	abstract def performBuild()
 	
+	@NonCPS
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
 		pipeline.slack.sendMessage(message, color, channel)
 	}

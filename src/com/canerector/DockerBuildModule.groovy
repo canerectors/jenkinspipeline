@@ -3,8 +3,11 @@ package com.canerector
 @groovy.transform.InheritConstructors
 class DockerBuildModule extends BuildModuleBase {
 		
-	@NonCPS
-	def performBuild(){
+	
+	def performBuildInternal(){
+	
+		checkout()
+	
 		sendSlackMessage('building...')
 	}
 }

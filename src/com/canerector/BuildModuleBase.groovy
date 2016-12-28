@@ -1,3 +1,5 @@
+package com.canerector
+
 abstract class BuildModuleBase{
 
 	def script

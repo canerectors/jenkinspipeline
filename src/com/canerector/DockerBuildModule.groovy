@@ -1,4 +1,4 @@
-@InheritConstructors
+@groovy.transform.InheritConstructors
 class DockerBuildModule extends BuildModuleBase {
 	//DockerBuildModule(script){ this.script = script }
 	

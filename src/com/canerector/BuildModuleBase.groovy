@@ -14,7 +14,7 @@ abstract class BuildModuleBase{
 
 	def performBuild(){
 	
-		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace("/${BRANCH_NAME}", '')
+		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace('/' + pipeline.env.BRANCH_NAME, '')
 		projectBranchName = projectName + ':' + pipeline.env.BRANCH_NAME
 		gitHubUrl = pipeline.github.getProjectUrl(projectName, pipeline.env.BRANCH_NAME)
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)

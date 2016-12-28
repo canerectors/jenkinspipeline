@@ -2,13 +2,13 @@ package com.canerector
 
 abstract class BuildModuleBase{
 
-	def script
+	def pipeline
 	
-	BuildModuleBase(script){ this.script = script }
+	BuildModuleBase(pipeline){ this.pipeline = pipeline }
 
 	abstract def performBuild()
 	
-	def sendSlackMessage(message, color = 'good'){
-	
+	def sendSlackMessage(message, color = 'good', channel = '#builds'){
+		pipeline.slack.sendMessage(message, color, channel)
 	}
 }

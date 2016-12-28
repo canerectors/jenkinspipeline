@@ -13,7 +13,7 @@ abstract class BuildModuleBase{
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
 
-	@NonCPS
+	
 	def performBuild(){
 	
 		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace('/' + pipeline.env.BRANCH_NAME, '')

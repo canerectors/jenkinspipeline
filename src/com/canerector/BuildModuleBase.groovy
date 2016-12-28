@@ -71,3 +71,5 @@ abstract class BuildModuleBase{
 		//pipeline.echo "HELLO"
 	}
 }
+
+return this;

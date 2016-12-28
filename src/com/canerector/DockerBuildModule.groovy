@@ -13,3 +13,5 @@ class DockerBuildModule extends BuildModuleBase {
 		
 	}
 }
+
+return this;

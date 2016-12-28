@@ -42,7 +42,8 @@ abstract class BuildModuleBase{
 	abstract def performBuildInternal()
 	
 	def checkout(){
-		stage('Checkout') {
+	
+		pipeline.stage('Checkout') {
 			pipeline.checkout scm
 			
 			pipeline.bat 'git submodule update --init --recursive'
@@ -55,7 +56,7 @@ abstract class BuildModuleBase{
 	}
 	
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
-		pipeline.echo message
+		pipeline.echo slackFormattedBuildUrl + ' ' + message
 		
 		//pipeline.slack.sendMessage(message, color, channel)
 		

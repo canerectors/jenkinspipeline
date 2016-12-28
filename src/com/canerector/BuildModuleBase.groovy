@@ -41,10 +41,8 @@ abstract class BuildModuleBase{
 		}
 	}
 	
-	@NonCPS
 	abstract def performBuildInternal()
 	
-	@NonCPS
 	def checkout(){
 	
 		pipeline.stage('Checkout') {
@@ -58,15 +56,13 @@ abstract class BuildModuleBase{
 			//pipeline.bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
 		}
 	}
-	
-	@NonCPS
+
 	def nugetRestore(){
 		pipeline.stage('Nuget Restore') {
 			pipeline.nuget.restore()
 		}
 	}
-	
-	@NonCPS
+
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
 		pipeline.echo slackFormattedBuildUrl + ' ' + message
 		

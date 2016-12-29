@@ -6,6 +6,8 @@ abstract class BuildModuleBase  implements Serializable {
 	
 	BuildModuleBase(pipeline){ this.pipeline = pipeline }
 	
+	def org
+	def branch
 	def projectName
 	def projectBranchName
 	def gitHubUrl

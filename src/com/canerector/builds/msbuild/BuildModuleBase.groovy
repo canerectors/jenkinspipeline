@@ -60,7 +60,7 @@ abstract class BuildModuleBase  implements Serializable {
 	}
 
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
-		node{
+		pipeline.node{
 			pipeline.slack.sendMessage(slackFormattedBuildUrl + ' ' + message, color, channel)
 		}
 	}

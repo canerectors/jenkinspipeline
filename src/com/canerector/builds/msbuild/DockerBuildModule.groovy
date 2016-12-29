@@ -24,7 +24,7 @@ class DockerBuildModule extends BuildModuleBase {
 	}
 	
 	def publish(){
-		stage('Publish to Docker Registry') {
+		pipeline.stage('Publish to Docker Registry') {
 
 			pipeline.bat 'cd ' + projectName + ' && dotnet publish -o publish_output --configuration Release'
 			

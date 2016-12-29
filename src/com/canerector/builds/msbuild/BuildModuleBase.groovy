@@ -12,6 +12,8 @@ abstract class BuildModuleBase  implements Serializable {
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
 	
+	def version
+	
 	def performBuild(){
 	
 		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace('/' + pipeline.env.BRANCH_NAME, '')
@@ -55,8 +57,44 @@ abstract class BuildModuleBase  implements Serializable {
 
 	def nugetRestore(){
 		pipeline.stage('Nuget Restore') {
-			pipeline.nuget.restore()
+			pipeline.bat 'dotnet restore'
 		}
+	}
+	
+	def version(){
+		pipeline.stage('Apply Versioning') {
+			pipeline.versioning.emitGitVersionConfigFile()
+				
+			pipeline.bat 'cd ' + projectName + ' && dotnet setversion'
+		}
+		
+		version = pipeline.versioning.getVersionFromBuildOutput()
+	}
+	
+	def build(){
+		pipeline.stage('Build') {
+			pipeline.bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release'
+		}
+	}
+	
+	def tests(){
+		def testFolder = projectName + '.Tests'
+		
+		def hasTests = fileExists(testFolder)	
+				
+		if(hasTests){
+			pipeline.stage('Tests'){
+					
+				success = pipeline.testing.runTests(testFolder)
+				 
+				if (!success){
+					sendMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
+					bat 'exit 1'
+				}			
+			}
+		}
+		else
+			echo 'No tests found.'
 	}
 
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){

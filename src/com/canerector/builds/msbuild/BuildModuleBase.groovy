@@ -16,9 +16,14 @@ abstract class BuildModuleBase  implements Serializable {
 	
 	def performBuild(){
 	
-		projectName = pipeline.env.JOB_NAME.replace('canerectors/', '').replace('/' + pipeline.env.BRANCH_NAME, '')
-		projectBranchName = projectName + ':' + pipeline.env.BRANCH_NAME
-		gitHubUrl = pipeline.github.getProjectUrl(projectName, pipeline.env.BRANCH_NAME)
+		def tokens = pipeline.env.JOB_NAME.tokenize('/')
+		
+		org = tokens[tokens.size()-3]
+		projectName = tokens[tokens.size()-2]
+		branch = tokens[tokens.size()-1]	
+		
+		projectBranchName = projectName + ':' + branch
+		gitHubUrl = pipeline.github.getProjectUrl(projectName, branch)
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		
@@ -30,13 +35,15 @@ abstract class BuildModuleBase  implements Serializable {
 			}
 			catch(err){
 		
-				pipeline.echo err
+				//pipeline.echo err
 		
 				def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
 				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
 		
 				pipeline.currentBuild.result = 'FAILURE'
+				
+				throw err
 			}
 		}
 	}

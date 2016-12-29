@@ -108,10 +108,10 @@ abstract class BuildModuleBase  implements Serializable {
 		if(hasTests){
 			pipeline.stage('Tests'){
 					
-				success = pipeline.testing.runTests(testFolder)
+				def success = pipeline.testing.runTests(testFolder)
 				 
 				if (!success){
-					sendMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
+					sendSlackMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
 					bat 'exit 1'
 				}			
 			}

@@ -1,0 +1,68 @@
+package com.canerector.builds.msbuild
+
+@groovy.transform.InheritConstructors
+class DockerBuildModule extends BuildModuleBase {
+		
+	def performBuildInternal(){
+	
+		def wsName = 'c:\\' + projectName + '_' + branch
+	
+		pipeline.node{
+			pipeline.ws(wsName){
+				clean()
+				checkout()
+				nugetRestore()
+				version()
+
+				build()
+				tests()
+				
+				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
+										
+				def feedUrl = pipeline.nuget.getFeedUrl(projectName)
+				def formattedText = slack.getMessageStringForUrl(feedUrl ,'deployed to MyGet')
+				
+				slack.sendMessage(slackFormattedGitHubUrl + " version: *" + version + "* " + formattedText)
+			}
+		}
+		
+		def userInput = true
+		
+		if (branch != 'master') {
+			try{
+				pipeline.timeout(time: 1, unit: 'MINUTES') { 
+					userInput = pipeline.input(message: 'Deploy Prerelease version to NuGet?')
+
+					userInput = true
+				}    	
+			}
+			catch(err){ // timeout or user input aborted			
+				userInput = false
+			}
+		}
+		
+		if ("${BRANCH_NAME}" == 'master' || userInput) {
+			pipeline.node{
+				pipeline.ws(wsName){
+					publish()
+				}
+			}
+		}		
+	}
+	
+	def publish(){
+	
+		pipeline.stage('Build Nuget Package') {
+			pipeline.bat 'del ' + projectName + '\\bin /s /q > NUL && del ' + projectName + '\\obj /s /q > NUL'
+			pipeline.bat 'dotnet pack ' + projectName + ' -o . -c Release'
+		}
+		
+		pipeline.stage('Publish Symbols') {
+			pipeline.nuget.publishSymbols()
+		}
+		
+		pipeline.stage('Nuget Publish') {
+			pipeline.nuget.publishPackage()				
+		}
+	}
+}

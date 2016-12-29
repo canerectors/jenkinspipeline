@@ -30,14 +30,14 @@ class DockerBuildModule extends BuildModuleBase {
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			
-			imageName = getImageName(projectShortName, version)
+			def imageName = getImageName(projectShortName, version)
 			
 			buildAndPush(imageName, projectName + '\\publish_output\\.')
 
 			slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
 				
 			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
-		}							
+		}
 	}
 	
 	def buildAndPush(imageName, dockerFilePath){
@@ -51,7 +51,7 @@ class DockerBuildModule extends BuildModuleBase {
 
 		pipeline.bat dockerCommand + ' build -t ' + imageName + ' ' + dockerFilePath
 		pipeline.bat dockerCommand + ' push ' + imageName
-}
+	}
 	
 	def getImageName(imageName, tag = 'latest'){
 		return 'registry.recursive.co/canerectors/' + imageName + ':' + tag

@@ -8,9 +8,14 @@ slackFormattedBuildUrl = ''
 
 def buildWithModule(moduleName){
 
-	projectName = env.JOB_NAME.replace('canerectors/', '').replace('/' + env.BRANCH_NAME, '')
-	projectBranchName = projectName + ':' + env.BRANCH_NAME
-	gitHubUrl = github.getProjectUrl(projectName, env.BRANCH_NAME)
+	def tokens = "${env.JOB_NAME}".tokenize('/')
+	
+	org = tokens[tokens.size()-3]
+	projectName = tokens[tokens.size()-2]
+	branch = tokens[tokens.size()-1]
+	
+	projectBranchName = projectName + ':' + branch
+	gitHubUrl = github.getProjectUrl(projectName, branch)
 	slackFormattedGitHubUrl = slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
 	slackFormattedBuildUrl = slack.getMessageStringForUrl(env.BUILD_URL, 'Build #' + env.BUILD_NUMBER)
 		
@@ -22,10 +27,12 @@ def buildWithModule(moduleName){
 
 			switch (moduleName){
 				case 'dockerpublish' :
-					buildModule = dockerModule
+					buildModule = new com.canerector.builds.msbuild.DockerBuildModule()
 			}
+			
+			def buildContext = [projectName:projectName, gitHubUrl:gitHubUrl]
 
-			buildModule.performBuild()
+			buildModule.performBuild(buildContext)
 		}
 		catch(err){
 	

@@ -1,5 +1,9 @@
 package com.canerector.builds.msbuild
 
+def context 
+
+DockerStages(buildContext) {this.context = buildContext}
+
 def publish(){
 	
 	stage('Publish to Docker Registry') {

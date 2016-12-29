@@ -1,9 +1,9 @@
 package com.canerector.builds.msbuild
 
-def performBuild(){
+def performBuild(buildContext){
 
-	def stage = new com.canerector.builds.msbuild.MsbuildStages()	
-	def dockerStage = new com.canerector.builds.msbuild.DockerStages()	
+	def stage = new com.canerector.builds.msbuild.MsbuildStages(buildContext)	
+	def dockerStage = new com.canerector.builds.msbuild.DockerStages(buildContext)	
 
 	def cleanJobName = "${JOB_NAME}".replace('canerectors/', '')
 	
@@ -16,7 +16,7 @@ def performBuild(){
 			stage.nugetRestore()
 			stage.version()
 			
-			version = versioning.getVersionFromBuildOutput()
+			buildContext.version = versioning.getVersionFromBuildOutput()
 			
 			stage.build()
 			stage.tests()

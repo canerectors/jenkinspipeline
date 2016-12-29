@@ -1,5 +1,9 @@
 package com.canerector.builds.msbuild
 
+def buildContext 
+
+MsbuildStages(buildContext) {this.buildContext = buildContext}
+
 def clean(){
 	stage('Clean') {
 		deleteDir()
@@ -28,18 +32,18 @@ def version(){
 	stage('Apply Versioning') {
 		versioning.emitGitVersionConfigFile()
 			
-		bat 'cd ' + projectName + ' && dotnet setversion'
+		bat 'cd ' + buildContext.projectName + ' && dotnet setversion'
 	}
 }
 
 def build(){
 	stage('Build') {
-		bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release'
+		bat 'cd ' + buildContext.projectName + ' && dotnet build --no-incremental -c Release'
 	}
 }
 
 def tests(){
-	def testFolder = projectName + '.Tests'
+	def testFolder = buildContext.projectName + '.Tests'
 	
 	def hasTests = fileExists(testFolder)	
 			
@@ -49,7 +53,7 @@ def tests(){
 			success = testing.runTests(testFolder)
 			 
 			if (!success){
-				sendMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
+				sendMessage('Testing failed for: ' + buildContext.slackFormattedGitHubUrl + ' version: ' + buildContext.version, 'danger')
 				bat 'exit 1'
 			}			
 		}

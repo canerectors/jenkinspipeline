@@ -30,7 +30,7 @@ def buildWithModule(moduleName){
 					buildModule = new com.canerector.builds.msbuild.DockerBuildModule()
 			}
 			
-			def buildContext = [projectName:(projectName), gitHubUrl:(gitHubUrl)]
+			object buildContext = [projectName:(projectName), gitHubUrl:(gitHubUrl)]
 			
 			echo 'Project Name: ' + buildContext.projectName
 			

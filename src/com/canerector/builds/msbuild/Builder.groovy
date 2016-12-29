@@ -31,6 +31,9 @@ def buildWithModule(moduleName){
 			}
 			
 			def buildContext = [projectName:(projectName), gitHubUrl:(gitHubUrl)]
+			
+			echo 'Project Name: ' + buildContext.projectName
+			
 			//def buildContext = [:]
 
 			buildModule.performBuild(buildContext)

@@ -21,7 +21,7 @@ def buildWithModule(moduleName){
 		
 	timestamps{
 		try{
-			//sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)
+			sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)
 			
 			Object buildModule
 
@@ -45,4 +45,12 @@ def buildWithModule(moduleName){
 			currentBuild.result = 'FAILURE'
 		}
 	}
+}
+
+def sendSlackMessage(message, color = 'good', channel = '#builds'){
+	echo slackFormattedBuildUrl + ' ' + message
+	
+	//pipeline.slack.sendMessage(message, color, channel)
+	
+	//pipeline.echo "HELLO"
 }

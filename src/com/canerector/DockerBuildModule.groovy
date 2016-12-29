@@ -7,5 +7,7 @@ package com.canerector
 
 		node{
 			stages.checkout()
+			stages.nugetRestore()
+			stages.version()
 		}
 	}

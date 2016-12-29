@@ -5,11 +5,23 @@ def checkout(){
 	stage('Checkout') {
 		checkout scm
 			
-		//pipeline.bat 'git submodule update --init --recursive'
-            
-								
+		bat 'git submodule update --init --recursive'								
 			
-		//pipeline.bat 'git checkout %BRANCH_NAME% && git pull'
-		//pipeline.bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
+		bat 'git checkout %BRANCH_NAME% && git pull'
+		bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
+	}
+}
+
+def nugetRestore(){
+	stage('Nuget Restore') {
+		bat 'dotnet restore'
+	}
+}
+
+def version(){
+	stage('Apply Versioning') {
+		versioning.emitGitVersionConfigFile()
+			
+		bat 'cd ' + projectName + ' && dotnet setversion'
 	}
 }

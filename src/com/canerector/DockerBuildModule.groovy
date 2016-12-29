@@ -8,7 +8,7 @@ class DockerBuildModule {
 	
 	def performBuild(){
 	
-		stages = new MsbuildStages()	
+		def stages = new com.canerector.MsbuildStages()	
 
 		stages.checkout()
 	}

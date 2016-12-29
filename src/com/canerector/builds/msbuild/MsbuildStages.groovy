@@ -1,4 +1,4 @@
-package com.canerector
+package com.canerector.builds.msbuild
 
 def checkout(){
 	

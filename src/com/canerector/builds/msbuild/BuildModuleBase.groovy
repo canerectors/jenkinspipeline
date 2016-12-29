@@ -17,12 +17,19 @@ abstract class BuildModuleBase  implements Serializable {
 	def version
 	
 	def performBuild(){
+		performBuild(null)
+	}
+	
+	def performBuild(projectNameOverride){
 	
 		def tokens = pipeline.env.JOB_NAME.tokenize('/')
 		
 		org = tokens[tokens.size()-3]
 		projectName = tokens[tokens.size()-2]
-		branch = tokens[tokens.size()-1]	
+		branch = tokens[tokens.size()-1]
+		
+		if(projectNameOverride != null)
+			projectName = projectNameOverride
 		
 		projectBranchName = projectName + ':' + branch
 		gitHubUrl = pipeline.github.getProjectUrl(projectName, branch)
@@ -38,9 +45,7 @@ abstract class BuildModuleBase  implements Serializable {
 				pipeline.manager.addShortText("v" + version)	
 			}
 			catch(err){
-		
-				//pipeline.echo err
-		
+
 				def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
 				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		

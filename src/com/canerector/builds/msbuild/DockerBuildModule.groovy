@@ -30,13 +30,34 @@ class DockerBuildModule extends BuildModuleBase {
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			
-			imageName = pipeline.docker.getImageName(projectShortName, version)
+			imageName = getImageName(projectShortName, version)
 			
-			pipeline.docker.publish(imageName, projectName + '\\publish_output\\.')
+			buildAndPush(imageName, projectName + '\\publish_output\\.')
 
-			slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(pipeline.docker.getRegistryUrl(projectShortName), imageName)
+			slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
 				
 			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
 		}							
+	}
+	
+	def buildAndPush(imageName, dockerFilePath){
+		def dockerHost = pipeline.env.DOCKER_HOST
+		
+		pipeline.withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+			pipeline.bat 'docker login -u ' + "${USER_NAME}" + ' -p ' + "${PASSWORD}"
+		}	
+		
+		dockerCommand = 'docker -H ' + dockerHost
+
+		pipeline.bat dockerCommand + ' build -t ' + imageName + ' ' + dockerFilePath
+		pipeline.bat dockerCommand + ' push ' + imageName
+}
+	
+	def getImageName(imageName, tag = 'latest'){
+		return 'registry.recursive.co/canerectors/' + imageName + ':' + tag
+	}
+	
+	def getRegistryUrl(imageName){
+		return 'https://registry.recursive.co:444/repository/canerectors/' + imageName
 	}
 }

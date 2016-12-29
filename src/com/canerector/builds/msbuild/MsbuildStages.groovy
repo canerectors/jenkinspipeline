@@ -2,7 +2,7 @@ package com.canerector.builds.msbuild
 
 def buildContext 
 
-def MsbuildStages(buildContext) {this.buildContext = buildContext
+def MsbuildStages(Map buildContext) {this.buildContext = buildContext
 	echo ' CONSTRUCTIONProject Name: ' + buildContext.projectName
 }
 

@@ -2,9 +2,9 @@ package com.canerector.builds.msbuild
 
 def buildContext 
 
-MsbuildStages(Map context) {this.buildContext = context
-	echo ' CONSTRUCTIONProject Name: ' + buildContext.projectName
-}
+//MsbuildStages(Map context) {this.buildContext = context
+//	echo ' CONSTRUCTIONProject Name: ' + buildContext.projectName
+//}
 
 def clean(){
 	stage('Clean') {

@@ -46,7 +46,7 @@ abstract class BuildModuleBase  implements Serializable {
 	def checkout(){
 	
 		pipeline.stage('Checkout') {
-			pipeline.checkout scm
+			pipeline.checkout pipeline.scm
 			
 			//pipeline.bat 'git submodule update --init --recursive'
             

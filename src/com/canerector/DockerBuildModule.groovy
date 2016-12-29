@@ -2,7 +2,7 @@ package com.canerector
 
 
 @groovy.transform.InheritConstructors
-class DockerBuildModule1 extends BuildModuleBase {
+class DockerBuildModule extends BuildModuleBase {
 		
 	def performBuildInternal(){
 	

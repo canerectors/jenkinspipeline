@@ -1,6 +1,6 @@
 package com.canerector
 
-abstract class BuildModuleBase{
+abstract class BuildModuleBase  implements Serializable {
 
 	
 	def pipeline

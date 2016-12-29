@@ -30,18 +30,25 @@ abstract class BuildModuleBase  implements Serializable {
 			}
 			catch(err){
 		
-				print err
+				pipeline.echo err
 		
 				def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
 				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
 		
-				currentBuild.result = 'FAILURE'
+				pipeline.currentBuild.result = 'FAILURE'
 			}
 		}
 	}
 	
 	abstract def performBuildInternal()
+	
+	def clean(){
+	
+		pipeline.stage('Clean') {
+			pipeline.deleteDir()
+		}
+	}
 	
 	def checkout(){
 	

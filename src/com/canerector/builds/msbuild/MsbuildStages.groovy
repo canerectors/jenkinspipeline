@@ -2,7 +2,9 @@ package com.canerector.builds.msbuild
 
 def buildContext 
 
-MsbuildStages(buildContext) {this.buildContext = buildContext}
+MsbuildStages(buildContext) {this.buildContext = buildContext
+	echo ' CONSTRUCTIONProject Name: ' + buildContext.projectName
+}
 
 def clean(){
 	stage('Clean') {

@@ -18,11 +18,6 @@ class DockerBuildModule extends BuildModuleBase {
 				tests()
 				
 				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
-										
-				def feedUrl = pipeline.nuget.getFeedUrl(projectName)
-				def formattedText = slack.getMessageStringForUrl(feedUrl ,'deployed to MyGet')
-				
-				slack.sendMessage(slackFormattedGitHubUrl + " version: *" + version + "* " + formattedText)
 			}
 		}
 		
@@ -45,6 +40,11 @@ class DockerBuildModule extends BuildModuleBase {
 			pipeline.node{
 				pipeline.ws(wsName){
 					publish()
+					
+					def feedUrl = pipeline.nuget.getFeedUrl(projectName)
+					def formattedText = pipeline.slack.getMessageStringForUrl(feedUrl ,'deployed to MyGet')
+				
+					sendSlackMessage(slackFormattedGitHubUrl + " version: *" + version + "* " + formattedText)
 				}
 			}
 		}		

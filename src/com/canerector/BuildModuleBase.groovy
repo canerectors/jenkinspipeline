@@ -23,21 +23,21 @@ abstract class BuildModuleBase  implements Serializable {
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		
 		pipeline.timestamps{
-			try{
+			//try{
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)		
 	
 				performBuildInternal()
-			}
-			catch(err){
+			//}
+			//catch(err){
 		
-				print err
+				//print err
 		
-				consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
+				//def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
-				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
+				//sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
 		
-				currentBuild.result = 'FAILURE'
-			}
+				//currentBuild.result = 'FAILURE'
+			//}
 		}
 	}
 	

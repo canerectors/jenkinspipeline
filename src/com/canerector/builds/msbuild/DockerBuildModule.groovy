@@ -4,7 +4,7 @@ def performBuild(buildContext){
 
 	echo 'Inside Module Project Name: ' + buildContext.projectName
 
-	def stage = new com.canerector.builds.msbuild.MsbuildStages()
+	def stage = new com.canerector.builds.msbuild.MsbuildStages(buildContext)
 echo 'Inside Module Project Name1: ' + buildContext.projectName	
 	def dockerStage = new com.canerector.builds.msbuild.DockerStages(buildContext)	
 	echo 'Inside Module Project Name2: ' + buildContext.projectName

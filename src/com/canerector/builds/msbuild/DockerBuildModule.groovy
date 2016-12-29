@@ -5,7 +5,7 @@ class DockerBuildModule extends BuildModuleBase {
 		
 	def performBuildInternal(){
 	
-		pipeline.node
+		pipeline.node{
 			pipeline.ws('c:\\' + projectName + '_' + branch){
 				clean()
 				checkout()
@@ -18,6 +18,7 @@ class DockerBuildModule extends BuildModuleBase {
 				tests()
 				
 				publish()
+			}
 		}
 		
 	}

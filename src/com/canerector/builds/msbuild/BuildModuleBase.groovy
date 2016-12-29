@@ -1,4 +1,4 @@
-package com.canerector
+package com.canerector.builds.msbuild
 
 abstract class BuildModuleBase  implements Serializable {
 
@@ -48,12 +48,10 @@ abstract class BuildModuleBase  implements Serializable {
 		pipeline.stage('Checkout') {
 			pipeline.checkout pipeline.scm
 			
-			//pipeline.bat 'git submodule update --init --recursive'
-            
-								
+			pipeline.bat 'git submodule update --init --recursive'								
 			
-			//pipeline.bat 'git checkout %BRANCH_NAME% && git pull'
-			//pipeline.bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
+			pipeline.bat 'git checkout %BRANCH_NAME% && git pull'
+			pipeline.bat 'git remote remove origin1'  //this is for gitversion. it can't handle more than one remote
 		}
 	}
 
@@ -64,9 +62,9 @@ abstract class BuildModuleBase  implements Serializable {
 	}
 
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
-		pipeline.echo slackFormattedBuildUrl + ' ' + message
+		//pipeline.echo slackFormattedBuildUrl + ' ' + message
 		
-		//pipeline.slack.sendMessage(message, color, channel)
+		pipeline.slack.sendMessage(slackFormattedBuildUrl + ' ' + message, color, channel)
 		
 		//pipeline.echo "HELLO"
 	}

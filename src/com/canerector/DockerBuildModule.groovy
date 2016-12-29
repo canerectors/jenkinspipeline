@@ -10,6 +10,8 @@ class DockerBuildModule {
 	
 		def stages = new com.canerector.MsbuildStages()	
 
-		stages.checkout()
+		node{
+			stages.checkout()
+		}
 	}
 }

@@ -44,7 +44,7 @@ class DockerBuildModule extends BuildModuleBase {
 		def dockerHost = pipeline.env.DOCKER_HOST
 		
 		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-			pipeline.bat 'docker login -u ' + "${USER_NAME}" + ' -p ' + "${PASSWORD}"
+			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD}"
 		}	
 		
 		dockerCommand = 'docker -H ' + dockerHost

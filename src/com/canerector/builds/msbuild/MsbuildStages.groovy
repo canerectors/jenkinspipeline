@@ -1,5 +1,11 @@
 package com.canerector.builds.msbuild
 
+def clean(){
+	stage('Clean') {
+		deleteDir()
+	}
+}
+
 def checkout(){
 	
 	stage('Checkout') {
@@ -24,4 +30,30 @@ def version(){
 			
 		bat 'cd ' + projectName + ' && dotnet setversion'
 	}
+}
+
+def build(){
+	stage('Build') {
+		bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release'
+	}
+}
+
+def tests(){
+	def testFolder = projectName + '.Tests'
+	
+	def hasTests = fileExists(testFolder)	
+			
+	if(hasTests){
+		stage('Tests'){
+                
+			success = testing.runTests(testFolder)
+			 
+			if (!success){
+				sendMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
+				bat 'exit 1'
+			}			
+		}
+	}
+	else
+		echo 'No tests found.'
 }

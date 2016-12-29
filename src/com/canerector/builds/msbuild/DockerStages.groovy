@@ -2,7 +2,7 @@ package com.canerector.builds.msbuild
 
 def buildContext 
 
-def DockerStages(Map buildContext) {this.buildContext = buildContext}
+DockerStages(Map buildContext) {this.buildContext = buildContext}
 
 def publish(){
 	

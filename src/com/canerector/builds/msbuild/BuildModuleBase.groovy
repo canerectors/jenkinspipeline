@@ -1,7 +1,6 @@
 package com.canerector.builds.msbuild
 
 abstract class BuildModuleBase  implements Serializable {
-
 	
 	def pipeline
 	
@@ -12,7 +11,6 @@ abstract class BuildModuleBase  implements Serializable {
 	def gitHubUrl
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
-
 	
 	def performBuild(){
 	
@@ -23,21 +21,21 @@ abstract class BuildModuleBase  implements Serializable {
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		
 		pipeline.timestamps{
-			//try{
+			try{
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)		
 	
 				performBuildInternal()
-			//}
-			//catch(err){
+			}
+			catch(err){
 		
-				//print err
+				print err
 		
-				//def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
+				def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
 		
-				//sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
+				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
 		
-				//currentBuild.result = 'FAILURE'
-			//}
+				currentBuild.result = 'FAILURE'
+			}
 		}
 	}
 	
@@ -62,10 +60,8 @@ abstract class BuildModuleBase  implements Serializable {
 	}
 
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){
-		//pipeline.echo slackFormattedBuildUrl + ' ' + message
-		
-		pipeline.slack.sendMessage(slackFormattedBuildUrl + ' ' + message, color, channel)
-		
-		//pipeline.echo "HELLO"
+		node{
+			pipeline.slack.sendMessage(slackFormattedBuildUrl + ' ' + message, color, channel)
+		}
 	}
 }

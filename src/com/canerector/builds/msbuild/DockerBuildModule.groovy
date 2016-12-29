@@ -7,7 +7,7 @@ class DockerBuildModule extends BuildModuleBase {
 	def performBuildInternal(){
 	
 		pipeline.node{
-			sendSlackMessage('building...')
+			//sendSlackMessage('building...')
 			checkout()
 		}	
 		

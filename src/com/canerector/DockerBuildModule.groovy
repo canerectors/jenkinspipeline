@@ -1,17 +1,13 @@
 package com.canerector
 
-
-@groovy.transform.InheritConstructors
-class DockerBuildModule extends BuildModuleBase {
+class DockerBuildModule {
 		
-	def performBuildInternal(){
+	def pipeline
 	
-		pipeline.node{
-			sendSlackMessage('building...')
-			checkout()
-		}	
-		
+	def performBuild(){
+	
+		stages = new MsbuildStages()	
+
+		stages.checkout()
 	}
 }
-
-return this;

@@ -110,7 +110,7 @@ abstract class BuildModuleBase  implements Serializable {
 			}
 		}
 		else
-			echo 'No tests found.'
+			pipeline.echo 'No tests found.'
 	}
 
 	def sendSlackMessage(message, color = 'good', channel = '#builds'){

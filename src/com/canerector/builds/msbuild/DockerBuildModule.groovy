@@ -43,7 +43,7 @@ class DockerBuildModule extends BuildModuleBase {
 	def buildAndPush(imageName, dockerFilePath){
 		def dockerHost = pipeline.env.DOCKER_HOST
 		
-		pipeline.withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
 			pipeline.bat 'docker login -u ' + "${USER_NAME}" + ' -p ' + "${PASSWORD}"
 		}	
 		

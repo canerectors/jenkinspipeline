@@ -11,11 +11,11 @@ class DockerBuildModule extends BuildModuleBase {
 				checkout()
 				nugetRestore()
 				version()
-				
-				//version = versioning.getVersionFromBuildOutput()
-				
+
 				build()
 				tests()
+				
+				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
 				
 				publish()
 			}
@@ -24,6 +24,19 @@ class DockerBuildModule extends BuildModuleBase {
 	}
 	
 	def publish(){
-	
+		stage('Publish to Docker Registry') {
+
+			pipeline.bat 'cd ' + projectName + ' && dotnet publish -o publish_output --configuration Release'
+			
+			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
+			
+			imageName = pipeline.docker.getImageName(projectShortName, version)
+			
+			pipeline.docker.publish(imageName, projectName + '\\publish_output\\.')
+
+			slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(pipeline.docker.getRegistryUrl(projectShortName), imageName)
+				
+			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
+		}							
 	}
 }

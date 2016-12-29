@@ -34,6 +34,8 @@ abstract class BuildModuleBase  implements Serializable {
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)		
 	
 				performBuildInternal()
+				
+				pipeline.manager.addShortText("v" + version)	
 			}
 			catch(err){
 		

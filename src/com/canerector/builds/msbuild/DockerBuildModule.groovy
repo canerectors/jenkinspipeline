@@ -34,7 +34,7 @@ class DockerBuildModule extends BuildModuleBase {
 			
 			buildAndPush(imageName, projectName + '\\publish_output\\.')
 
-			slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
+			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
 				
 			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
 		}
@@ -47,7 +47,7 @@ class DockerBuildModule extends BuildModuleBase {
 			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD}"
 		}	
 		
-		dockerCommand = 'docker -H ' + dockerHost
+		def dockerCommand = 'docker -H ' + dockerHost
 
 		pipeline.bat dockerCommand + ' build -t ' + imageName + ' ' + dockerFilePath
 		pipeline.bat dockerCommand + ' push ' + imageName

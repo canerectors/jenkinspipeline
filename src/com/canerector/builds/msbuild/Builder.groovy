@@ -21,7 +21,7 @@ def buildWithModule(moduleName){
 		
 	timestamps{
 		try{
-			sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)
+			//sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)
 			
 			Object buildModule
 

@@ -36,7 +36,7 @@ class DockerBuildModule extends BuildModuleBase {
 			}
 		}
 		
-		if ("${BRANCH_NAME}" == 'master' || userInput) {
+		if (branch == 'master' || userInput) {
 			pipeline.node{
 				pipeline.ws(wsName){
 					publish()

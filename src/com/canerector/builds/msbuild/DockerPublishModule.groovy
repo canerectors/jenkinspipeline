@@ -32,7 +32,7 @@ class DockerBuildModule extends BuildModuleBase {
 			
 			def imageName = getImageName(projectShortName, version)
 			
-			buildAndPush(imageName, projectName + '\\publish_output\\.')
+			buildAndPush(projectShortName, projectName + '\\publish_output\\.')
 
 			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
 				
@@ -40,7 +40,7 @@ class DockerBuildModule extends BuildModuleBase {
 		}
 	}
 	
-	def buildAndPush(imageName, dockerFilePath){
+	def buildAndPush(projectShortName, dockerFilePath){
 		def dockerHost = pipeline.env.DOCKER_HOST
 		
 		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
@@ -49,8 +49,12 @@ class DockerBuildModule extends BuildModuleBase {
 		
 		def dockerCommand = 'docker -H ' + dockerHost
 
-		pipeline.bat dockerCommand + ' build -t ' + imageName + ' ' + dockerFilePath
+		def imageName = getImageName(projectShortName, version)
+		def latestImageName = getImageName(projectShortName, branch)
+		
+		pipeline.bat dockerCommand + ' build -t ' + imageName + ' -t ' + latestImageName + ' ' + dockerFilePath
 		pipeline.bat dockerCommand + ' push ' + imageName
+		pipeline.bat dockerCommand + ' push ' + latestImageName
 	}
 	
 	def getImageName(imageName, tag = 'latest'){

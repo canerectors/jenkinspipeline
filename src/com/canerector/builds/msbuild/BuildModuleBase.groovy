@@ -1,6 +1,6 @@
 package com.canerector.builds.msbuild
 
-abstract class BuildModuleBase  implements Serializable {
+abstract class BuildModuleBase implements Serializable {
 	
 	def pipeline
 	
@@ -8,9 +8,7 @@ abstract class BuildModuleBase  implements Serializable {
 	def stage
 	
 	BuildModuleBase(pipeline){
-		this.pipeline = pipeline
-		this.bat = pipeline.bat
-		this.stage = pipeline.stage
+		this.pipeline = pipeline		
 	}
 	
 	def org
@@ -28,6 +26,9 @@ abstract class BuildModuleBase  implements Serializable {
 	}
 	
 	def performBuild(projectNameOverride){
+	
+		this.bat = pipeline.bat
+		this.stage = pipeline.stage
 	
 		def tokens = pipeline.env.JOB_NAME.tokenize('/')
 		
@@ -75,7 +76,7 @@ abstract class BuildModuleBase  implements Serializable {
 	
 	def checkout(){
 	
-		stage('Checkout') {
+		pipeline.stage('Checkout') {
 			pipeline.checkout pipeline.scm
 			
 			pipeline.bat 'git submodule update --init --recursive'								

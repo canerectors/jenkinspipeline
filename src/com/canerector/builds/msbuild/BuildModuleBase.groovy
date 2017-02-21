@@ -4,7 +4,14 @@ abstract class BuildModuleBase  implements Serializable {
 	
 	def pipeline
 	
-	BuildModuleBase(pipeline){ this.pipeline = pipeline }
+	def bat
+	def stage
+	
+	BuildModuleBase(pipeline){
+		this.pipeline = pipeline
+		this.bat = pipeline.bat
+		this.stage = pipeline.stage
+	}
 	
 	def org
 	def branch
@@ -68,7 +75,7 @@ abstract class BuildModuleBase  implements Serializable {
 	
 	def checkout(){
 	
-		pipeline.stage('Checkout') {
+		stage('Checkout') {
 			pipeline.checkout pipeline.scm
 			
 			pipeline.bat 'git submodule update --init --recursive'								

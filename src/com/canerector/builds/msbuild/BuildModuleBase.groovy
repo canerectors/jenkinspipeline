@@ -3,14 +3,11 @@ package com.canerector.builds.msbuild
 abstract class BuildModuleBase implements Serializable {
 	
 	def pipeline
-	
-	def bat
-	def stage
-	
+
 	BuildModuleBase(pipeline){
 		this.pipeline = pipeline		
 	}
-	
+
 	def org
 	def branch
 	def projectName
@@ -26,9 +23,6 @@ abstract class BuildModuleBase implements Serializable {
 	}
 	
 	def performBuild(projectNameOverride){
-	
-		this.bat = pipeline.bat
-		this.stage = pipeline.stage
 	
 		def tokens = pipeline.env.JOB_NAME.tokenize('/')
 		

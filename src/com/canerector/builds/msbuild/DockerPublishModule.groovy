@@ -1,7 +1,7 @@
 package com.canerector.builds.msbuild
 
 @groovy.transform.InheritConstructors
-class DockerBuildModule extends BuildModuleBase {
+class DockerPublishModule extends BuildModuleBase {
 		
 	def performBuildInternal(){
 	

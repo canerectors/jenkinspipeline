@@ -114,7 +114,7 @@ abstract class BuildModuleBase implements Serializable {
 				 
 				if (!success){
 					sendSlackMessage('Testing failed for: ' + slackFormattedGitHubUrl + ' version: ' + version, 'danger')
-					bat 'exit 1'
+					pipeline.bat 'exit 1'
 				}			
 			}
 		}

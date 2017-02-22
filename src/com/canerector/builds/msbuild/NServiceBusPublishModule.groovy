@@ -1,7 +1,7 @@
 package com.canerector.builds.msbuild
 
 @groovy.transform.InheritConstructors
-class NServiceBusPublishModule extends DockerPublishModule {
+class NServiceBusPublishModule extends BuildModuleBase {
 		
 	def performBuildInternal(){
 	
@@ -17,9 +17,9 @@ class NServiceBusPublishModule extends DockerPublishModule {
 				
 				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
 				
-				publish()
-				
 				publishContract()
+				
+				publish()				
 			}
 		}		
 	}
@@ -29,7 +29,7 @@ class NServiceBusPublishModule extends DockerPublishModule {
 		
 		def hasContract = pipeline.fileExists(contractProjectFolder)
 		
-		if(hasTests){
+		if(hasContract){
 			pipeline.stage('Publish Service Contract'){
 					
 				pipeline.bat 'del ' + contractProjectFolder + '\\bin /s /q > NUL && del ' + contractProjectFolder + '\\obj /s /q > NUL'

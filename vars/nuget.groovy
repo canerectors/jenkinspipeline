@@ -17,7 +17,7 @@ def publishSymbols(packageName = '*symbols.nupkg') {
 }
 
 def pack(projectName) {
-	pipeline.bat 'dotnet pack ' + projectName + ' -o . -c Release /P:GenerateAssemblyInfo=false'
+	bat 'dotnet pack ' + projectName + ' -o . -c Release /P:GenerateAssemblyInfo=false'
 }
 
 def getFeedUrl(projectName){

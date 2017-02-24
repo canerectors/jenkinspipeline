@@ -105,7 +105,7 @@ abstract class BuildModuleBase implements Serializable {
 	def tests(){
 		def testFolder = projectName + '.Tests'
 		
-		def hasTests = pipeline.fileExists(testFolder)	
+		def hasTests = false // pipeline.fileExists(testFolder)	
 				
 		if(hasTests){
 			pipeline.stage('Tests'){

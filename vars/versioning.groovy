@@ -5,7 +5,7 @@ def getVersionFromBuildOutput() {
 	if (matcher?.matches()) {
         def match = matcher.group(1).toString().replace('\"','').replace(',','')
 		bat '@echo Found version: ' + match
-        return match;
+        return match
     }
 	else
 		bat '@echo No Version found in build output.'

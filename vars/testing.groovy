@@ -4,7 +4,7 @@ def runTests(testProjectFolder){
 	
 	try {
 		testProjectFile = testProjectFolder + '\\' + testProjectFolder + '.csproj'
-		bat 'dotnet test --no-build -c Release' + testProjectFile + ' /P:GenerateAssemblyInfo=false' // + ' -xml xunit.xml'
+		bat 'dotnet test --no-build -c Release ' + testProjectFile + ' /P:GenerateAssemblyInfo=false' // + ' -xml xunit.xml'
 	} catch (Exception err) {
 		echo "Caught exception: ${err}"
 		success = false

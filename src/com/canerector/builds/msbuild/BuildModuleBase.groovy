@@ -90,7 +90,7 @@ abstract class BuildModuleBase implements Serializable {
 		pipeline.stage('Apply Versioning') {
 			pipeline.versioning.emitGitVersionConfigFile()
 				
-			pipeline.bat 'cd ' + projectName + ' && dotnet setversion'
+			pipeline.bat 'cd ' + projectName + ' && gitversion /updateassemblyinfo'
 		}
 		
 		version = pipeline.versioning.getVersionFromBuildOutput()
@@ -98,7 +98,7 @@ abstract class BuildModuleBase implements Serializable {
 	
 	def build(){
 		pipeline.stage('Build') {
-			pipeline.bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release'
+			pipeline.bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false'
 		}
 	}
 	

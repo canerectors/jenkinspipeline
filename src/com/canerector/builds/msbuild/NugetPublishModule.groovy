@@ -53,14 +53,14 @@ class NugetPublishModule extends BuildModuleBase {
 	def publish(){
 	
 		pipeline.stage('Build Nuget Package') {
-			pipeline.bat 'del ' + projectName + '\\bin /s /q > NUL && del ' + projectName + '\\obj /s /q > NUL'
+			//pipeline.bat 'del ' + projectName + '\\bin /s /q > NUL && del ' + projectName + '\\obj /s /q > NUL'
 			
 			pipeline.nuget.pack(projectName)
 		}
 		
-		pipeline.stage('Publish Symbols') {
-			pipeline.nuget.publishSymbols()
-		}
+		//pipeline.stage('Publish Symbols') {
+		//	pipeline.nuget.publishSymbols()
+		//}
 		
 		pipeline.stage('Nuget Publish') {
 			pipeline.nuget.publishPackage()				

@@ -4,7 +4,7 @@ def getVersionFromBuildOutput() {
 
 	if (matcher?.matches()) {
         def match = matcher.group(1).toString().replace('\"','').replace(',','')
-		bat '@echo found version: ' + match
+		bat '@echo Found version: ' + match
         return match;
     }
 	else

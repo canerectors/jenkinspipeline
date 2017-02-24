@@ -1,6 +1,6 @@
 @NonCPS
 def getVersionFromBuildOutput() {
-    def matcher = manager.getLogMatcher("SemVer:(.*)\$") //manager.getLogMatcher(".*Setting version to: (.*)\$")
+    def matcher = manager.getLogMatcher(".*\"SemVer\":(.*)\$") //manager.getLogMatcher(".*Setting version to: (.*)\$")
 
 	if (matcher?.matches()) {
         def match = matcher.group(1).toString().replace('\"','')

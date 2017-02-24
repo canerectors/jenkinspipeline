@@ -54,7 +54,8 @@ class NugetPublishModule extends BuildModuleBase {
 	
 		pipeline.stage('Build Nuget Package') {
 			pipeline.bat 'del ' + projectName + '\\bin /s /q > NUL && del ' + projectName + '\\obj /s /q > NUL'
-			pipeline.bat 'dotnet pack ' + projectName + ' -o . -c Release'
+			
+			pipeline.nuget.pack()
 		}
 		
 		pipeline.stage('Publish Symbols') {

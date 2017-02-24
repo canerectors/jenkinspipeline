@@ -16,6 +16,10 @@ def publishSymbols(packageName = '*symbols.nupkg') {
     }
 }
 
+def pack() {
+	pipeline.bat 'dotnet pack ' + projectName + ' -o . -c Release /P:GenerateAssemblyInfo=false'
+}
+
 def getFeedUrl(projectName){
 	return 'https://www.myget.org/feed/canerectors/package/nuget/' + projectName
 }

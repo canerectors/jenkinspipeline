@@ -94,6 +94,8 @@ abstract class BuildModuleBase implements Serializable {
 		}
 		
 		version = pipeline.versioning.getVersionFromBuildOutput()
+		
+		println 'Version: ' + version
 	}
 	
 	def build(){

@@ -1,6 +1,6 @@
 @NonCPS
 def getVersionFromBuildOutput() {
-    def matcher = manager.getLogMatcher("\"SemVer\":(.*)\$") //manager.getLogMatcher(".*Setting version to: (.*)\$")
+    def matcher = manager.getLogMatcher("SemVer:(.*)\$") //manager.getLogMatcher(".*Setting version to: (.*)\$")
 
 	if (matcher?.matches()) {
         def match = matcher.group(1).toString().replace('\"','')
@@ -21,9 +21,6 @@ def getVersionFromBuildOutput() {
 def emitGitVersionConfigFile()
 {
 	bat '@echo mode: Mainline > GitVersion.yml && echo branches: {} >> GitVersion.yml && echo ignore: >> GitVersion.yml && echo   sha: [] >> GitVersion.yml'
-    //bat 'echo branches: {} >> GitVersion.yml'
-    //bat 'echo ignore: >> GitVersion.yml'
-    //bat 'echo   sha: [] >> GitVersion.yml'
 }
 
 return this;

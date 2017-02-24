@@ -5,7 +5,7 @@ def restore(){
 def publishPackage(packageName = '*.nupkg'){
 
 	withCredentials([string(credentialsId: 'nuget-api-key', variable: 'API_KEY')]) {
-        bat 'dotnet nuget push ' + packageName + ' --source https://www.myget.org/F/canerectors/api/v2/package --api-key %API_KEY% --symbols-source https://www.myget.org/F/canerectors/symbols/api/v2/package'                
+        bat 'dotnet nuget push ' + packageName + ' --source https://www.myget.org/F/canerectors/api/v2/package --api-key %API_KEY% --symbol-source https://www.myget.org/F/canerectors/symbols/api/v2/package --symbol-api-key %API_KEY%'
     }
 }
 

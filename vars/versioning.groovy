@@ -3,7 +3,7 @@ def getVersionFromBuildOutput() {
     def matcher = manager.getLogMatcher(".*\"SemVer\":(.*)\$") //manager.getLogMatcher(".*Setting version to: (.*)\$")
 
 	if (matcher?.matches()) {
-        def match = matcher.group(1).toString().replace('\"','')
+        def match = matcher.group(1).toString().replace('\"','').replace(',','')
 		bat '@echo found version: ' + match
         return match;
     }

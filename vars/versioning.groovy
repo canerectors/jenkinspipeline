@@ -4,8 +4,11 @@ def getVersionFromBuildOutput() {
 
 	if (matcher?.matches()) {
         def match = matcher.group(1).toString().replace('\"','')
+		bat 'echo found version: ' + match
         return match;
     }
+	else
+		bat 'echo No Version found in build output.'
 	
 	//def matches = manager.build.logFile.text =~ ".*Setting version to: (.*)\$"
 	

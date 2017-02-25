@@ -26,7 +26,7 @@ class DockerPublishModule extends BuildModuleBase {
 	def publish(){
 		pipeline.stage('Publish to Docker Registry') {
 
-			pipeline.bat 'cd ' + projectName + ' && dotnet publish -o publish_output --configuration Release'
+			pipeline.bat 'cd ' + projectName + ' && dotnet publish -o publish_output --configuration Release && copy Dockerfile publish_output'
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			

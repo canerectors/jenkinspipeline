@@ -25,7 +25,7 @@ class NugetPublishModule extends BuildModuleBase {
 		
 		if (branch != 'master') {
 			try{
-				pipeline.timeout(time: 1, unit: 'MINUTES') { 
+				pipeline.timeout(time: 10, unit: 'SECONDS') { 
 					userInput = pipeline.input(message: 'Deploy Prerelease version to NuGet?')
 
 					userInput = true

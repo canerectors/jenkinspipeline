@@ -82,7 +82,7 @@ abstract class BuildModuleBase implements Serializable {
 
 	def nugetRestore(){
 		pipeline.stage('Nuget Restore') {
-			pipeline.bat 'dotnet restore'
+			pipeline.nuget.restore()
 		}
 	}
 	

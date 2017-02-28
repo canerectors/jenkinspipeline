@@ -6,7 +6,7 @@ def runTests(testProjectFolder){
 		testDllFile = testProjectFolder + '\\bin\\Release\\net461\\' + testProjectFolder + '.dll'
 		testProjectFile = testProjectFolder + '\\' + testProjectFolder + '.csproj'
 		bat 'dotnet build -c Release ' + testProjectFile + ' /P:GenerateAssemblyInfo=false'
-		bat 'dir %USERPROFILE%\\.nuget\\packages\\xunit.runner.console\\2.2.0\\tools' 
+		bat 'dir %USERPROFILE%\\.nuget\\packages\\' 
 		bat '%USERPROFILE%\\.nuget\\packages\\xunit.runner.console\\2.2.0\\tools\\xunit.console.exe ' + testDllFile + ' -xml xunit.xml'
 	} catch (Exception err) {
 		echo "Caught exception: ${err}"

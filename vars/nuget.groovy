@@ -1,5 +1,5 @@
 def restore(){
-	bat 'dotnet restore'
+	bat 'dotnet restore --packages c:\\packages'
 }
 
 def publishPackage(packageName = '*.nupkg'){

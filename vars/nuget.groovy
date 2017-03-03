@@ -5,7 +5,7 @@ def restore(){
 def publishPackage(packageName = '*.nupkg'){
 
 	withCredentials([string(credentialsId: 'nuget-api-key', variable: 'API_KEY')]) {
-        bat 'del *.symbols.nupkg && nuget push ' + packageName + ' -Source https://www.myget.org/F/canerectors/api/v2/package -ApiKey  %API_KEY% -NonInteractive'                
+        bat 'nuget push ' + packageName + ' -Source https://www.myget.org/F/canerectors/api/v2/package -ApiKey  %API_KEY% -NonInteractive'                
     }
 }
 
@@ -17,7 +17,7 @@ def publishSymbols(packageName = '*symbols.nupkg') {
 }
 
 def pack(projectName, packageVersion) {
-	bat 'dotnet pack ' + projectName + ' -o .. -c Release --include-source /P:GenerateAssemblyInfo=false /P:PackageVersion=' + packageVersion
+	bat 'dotnet pack ' + projectName + ' -o .. -c Release --include-source --no-build /P:GenerateAssemblyInfo=false /P:PackageVersion=' + packageVersion
 }
 
 def getFeedUrl(projectName){

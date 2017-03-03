@@ -58,9 +58,9 @@ class NugetPublishModule extends BuildModuleBase {
 			pipeline.nuget.pack(projectName, version)
 		}
 		
-		pipeline.stage('Publish Symbols') {
-			pipeline.nuget.publishSymbols()
-		}
+		//pipeline.stage('Publish Symbols') {
+		//	pipeline.nuget.publishSymbols()
+		//}
 		
 		pipeline.stage('Nuget Publish') {
 			pipeline.nuget.publishPackage()				

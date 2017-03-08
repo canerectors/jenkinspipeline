@@ -15,6 +15,7 @@ abstract class BuildModuleBase implements Serializable {
 	def gitHubUrl
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
+	def consoleUrl
 	
 	def version
 	
@@ -37,10 +38,11 @@ abstract class BuildModuleBase implements Serializable {
 		gitHubUrl = pipeline.github.getProjectUrl(projectName, branch)
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
+		consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'View Build Log.')
 		
 		pipeline.timestamps{
 			try{
-				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl)		
+				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl + ' ' + consoleUrl)		
 	
 				performBuildInternal()
 				
@@ -48,9 +50,7 @@ abstract class BuildModuleBase implements Serializable {
 			}
 			catch(err){
 
-				def consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'Build Log.')		
-		
-				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. See ' + consoleUrl, 'danger')		
+				sendSlackMessage('for project: ' + slackFormattedGitHubUrl + ' failed. ' + consoleUrl, 'danger')		
 		
 				pipeline.currentBuild.result = 'FAILURE'
 				

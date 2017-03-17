@@ -9,6 +9,8 @@ def publish(imageName, dockerFilePath){
 
 	bat dockerCommand + ' build -t ' + imageName + ' ' + dockerFilePath
 	bat dockerCommand + ' push ' + imageName
+	
+	bat dockerCommand + ' rmi ' + imageName
 }
 
 def getImageName(projectName, tag = 'latest'){

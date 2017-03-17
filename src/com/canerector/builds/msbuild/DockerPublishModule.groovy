@@ -55,6 +55,9 @@ class DockerPublishModule extends BuildModuleBase {
 		pipeline.bat dockerCommand + ' build -t ' + imageName + ' -t ' + latestImageName + ' ' + dockerFilePath
 		pipeline.bat dockerCommand + ' push ' + imageName
 		pipeline.bat dockerCommand + ' push ' + latestImageName
+		
+		pipeline.bat dockerCommand + ' rmi ' + imageName
+		pipeline.bat dockerCommand + ' rmi ' + latestImageName
 	}
 	
 	def getImageName(imageName, tag = 'latest'){

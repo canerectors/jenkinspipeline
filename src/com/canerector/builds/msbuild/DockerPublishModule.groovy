@@ -26,13 +26,13 @@ class DockerPublishModule extends BuildModuleBase {
 	def publish(){
 		pipeline.stage('Publish to Docker Registry') {
 
-			pipeline.bat 'cd ' + projectName + ' && dotnet publish -o publish_output --configuration Release && copy Dockerfile publish_output'
+			pipeline.bat 'cd ' + buildProject + ' && dotnet publish -o publish_output --configuration Release && copy Dockerfile publish_output'
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			
 			def imageName = getImageName(projectShortName, version)
 			
-			buildAndPush(projectShortName, projectName + '\\publish_output\\.')
+			buildAndPush(projectShortName, buildProject + '\\publish_output\\.')
 
 			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
 				

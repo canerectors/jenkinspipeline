@@ -16,6 +16,7 @@ abstract class BuildModuleBase implements Serializable {
 	def slackFormattedGitHubUrl
 	def slackFormattedBuildUrl
 	def consoleUrl
+	def buildProject
 	
 	def version
 	
@@ -23,7 +24,7 @@ abstract class BuildModuleBase implements Serializable {
 		performBuild(null)
 	}
 	
-	def performBuild(projectNameOverride){
+	def performBuild(projectToBuild){
 	
 		def tokens = pipeline.env.JOB_NAME.tokenize('/')
 		
@@ -31,9 +32,13 @@ abstract class BuildModuleBase implements Serializable {
 		projectName = tokens[tokens.size()-2]
 		branch = tokens[tokens.size()-1]
 		
-		if(projectNameOverride != null)
+		if(projectToBuild != null)
 		{			
-			projectName = projectNameOverride.replace('${PROJECT_NAME}', projectName)
+			buildProject = projectToBuild.replace('${PROJECT_NAME}', projectName)
+		}
+		else
+		{
+			buildProject = projectName
 		}
 		
 		projectBranchName = projectName + ':' + branch
@@ -46,7 +51,7 @@ abstract class BuildModuleBase implements Serializable {
 			try{
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl + ' ' + consoleUrl)		
 	
-				performBuildInternal()
+				performBuildInternal(projectToBuild)
 				
 				pipeline.manager.addShortText("v" + version)	
 			}
@@ -100,7 +105,7 @@ abstract class BuildModuleBase implements Serializable {
 	
 	def build(){
 		pipeline.stage('Build') {
-			pipeline.bat 'cd ' + projectName + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false'
+			pipeline.bat 'cd ' + projectToBuild + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false'
 		}
 	}
 	

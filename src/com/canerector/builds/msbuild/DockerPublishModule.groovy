@@ -5,14 +5,8 @@ class DockerPublishModule extends BuildModuleBase {
 		
 	def performBuildInternal(){
 	
-		pipeline.stage ('Stage 0. Configure custom path')
-		def customPath = "c:/workspace/${env.JOB_NAME}"
-
-		pipeline.stage ('Stage 1. Allocate workspace')
-		def extWorkspace = pipeline.exwsAllocate diskPoolId: 'diskpool1', path: customPath
-	
 		pipeline.node{
-			exws (extWorkspace){
+			pipeline.ws('c:\\' + projectName + '_' + branch){
 				clean()
 				checkout()
 				nugetRestore()

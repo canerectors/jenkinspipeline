@@ -105,7 +105,7 @@ abstract class BuildModuleBase implements Serializable {
 	
 	def build(){
 		pipeline.stage('Build') {
-			pipeline.bat 'cd ' + projectToBuild + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false'
+			pipeline.bat 'cd ' + buildProject + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false'
 		}
 	}
 	

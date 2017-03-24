@@ -32,7 +32,10 @@ abstract class BuildModuleBase implements Serializable {
 		branch = tokens[tokens.size()-1]
 		
 		if(projectNameOverride != null)
+		{
+			projectNameOverride.replace('${PROJECT_NAME}', projectName)
 			projectName = projectNameOverride
+		}
 		
 		projectBranchName = projectName + ':' + branch
 		gitHubUrl = pipeline.github.getProjectUrl(projectName, branch)

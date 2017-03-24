@@ -32,9 +32,8 @@ abstract class BuildModuleBase implements Serializable {
 		branch = tokens[tokens.size()-1]
 		
 		if(projectNameOverride != null)
-		{
-			projectNameOverride.replace('${PROJECT_NAME}', projectName)
-			projectName = projectNameOverride
+		{			
+			projectName = projectNameOverride.replace('${PROJECT_NAME}', projectName)
 		}
 		
 		projectBranchName = projectName + ':' + branch

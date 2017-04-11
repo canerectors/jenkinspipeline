@@ -43,8 +43,12 @@ class DockerPublishModule extends BuildModuleBase {
 	def buildAndPush(projectShortName, dockerFilePath){
 		def dockerHost = pipeline.env.DOCKER_HOST
 		
-		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_canerectors_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
 			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD}"
+		}
+		
+		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_canerectors_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD} registry.recursive.co"
 		}	
 		
 		def dockerCommand = 'docker -H ' + dockerHost

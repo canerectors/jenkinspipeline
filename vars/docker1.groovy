@@ -35,12 +35,12 @@ def tag(imageName, tagName){
 }
 
 def login(){
-	pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-		pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD}"
+	withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+		bat 'docker login -u ' + "${USER_NAME}" + ' -p ' + "${PASSWORD}"
 	}
 		
-	pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_canerectors_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-		pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD} registry.recursive.co"
+	withCredentials([usernamePassword(credentialsId: 'docker_canerectors_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+		bat 'docker login -u ' + "${USER_NAME}" + ' -p ' + "${PASSWORD} registry.recursive.co"
 	}	
 }
 

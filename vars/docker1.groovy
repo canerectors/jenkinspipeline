@@ -11,7 +11,7 @@ def build(imageName, dockerFilePath){
 def publish(imageName){
 	dockerHost = "${env.DOCKER_HOST}"
 
-	docker.login()
+	docker1.login()
 
 	dockerCommand = 'docker -H ' + dockerHost
 

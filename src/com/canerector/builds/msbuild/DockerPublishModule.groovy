@@ -27,7 +27,7 @@ class DockerPublishModule extends MSBuildModuleBase {
 
 			pipeline.bat 'cd ' + buildProject + ' && dotnet publish -o publish_output --configuration Release /p:GenerateAssemblyInfo=false && copy ..\\Dockerfile publish_output'
 			
-			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
+			
 			
 			def imageName = pipeline.docker1.getImageFullName(projectShortName, version)
 			def imageLatestName = pipeline.docker1.getImageFullName(projectShortName, branch)

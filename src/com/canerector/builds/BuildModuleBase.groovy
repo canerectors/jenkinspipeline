@@ -11,6 +11,7 @@ abstract class BuildModuleBase implements Serializable {
 	def org
 	def branch
 	def projectName
+	def projectShortName
 	def projectBranchName
 	def gitHubUrl
 	def slackFormattedGitHubUrl
@@ -46,6 +47,7 @@ abstract class BuildModuleBase implements Serializable {
 		slackFormattedGitHubUrl = pipeline.slack.getMessageStringForUrl(gitHubUrl, projectBranchName)
 		slackFormattedBuildUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL, 'Build #' + pipeline.env.BUILD_NUMBER)
 		consoleUrl = pipeline.slack.getMessageStringForUrl(pipeline.env.BUILD_URL + 'console', 'View Build Log.')
+		projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 		
 		pipeline.timestamps{
 			try{

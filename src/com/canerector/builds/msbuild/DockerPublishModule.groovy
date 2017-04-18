@@ -12,8 +12,8 @@ class DockerPublishModule extends MSBuildModuleBase {
 				nugetRestore()
 				version()
 
-				//build()
-				//tests()
+				build()
+				tests()
 				
 				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
 				

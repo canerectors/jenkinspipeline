@@ -1,5 +1,6 @@
 package com.canerector.builds.angular
 
+@groovy.transform.InheritConstructors
 class AngularDockerModule extends com.canerector.builds.DockerBuildModuleBase {
 	
 	def performBuildInternal(){

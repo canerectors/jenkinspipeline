@@ -1,5 +1,6 @@
 package com.canerector.builds
 
+@groovy.transform.InheritConstructors
 abstract class DockerBuildModuleBase extends BuildModuleBase {
 
 	

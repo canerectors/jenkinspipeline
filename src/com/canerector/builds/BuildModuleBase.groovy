@@ -91,7 +91,7 @@ abstract class BuildModuleBase implements Serializable {
 		pipeline.stage('Apply Versioning') {
 			pipeline.versioning.emitGitVersionConfigFile()
 				
-			versionCommand = 'cd ' + projectName + ' && gitversion'
+			def versionCommand = 'cd ' + projectName + ' && gitversion'
 			
 			if(updateAssemblyInfo){
 				versionCommand = versionCommand + ' /updateassemblyinfo'

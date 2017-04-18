@@ -12,7 +12,13 @@ class AngularDockerModule extends com.canerector.builds.DockerBuildModuleBase {
 				clean()
 				checkout()
 				
-				version(false)
+				pipeline.stage('Versioning') {
+					pipeline.versioning.emitGitVersionConfigFile()
+					
+					pipeline.bat 'gitversion'
+				}
+		
+				version = pipeline.versioning.getVersionFromBuildOutput()
 
 				build()
 								

@@ -12,7 +12,7 @@ class AngularDockerModule extends com.canerector.builds.DockerBuildModuleBase {
 				clean()
 				checkout()
 				
-				version()
+				version(false)
 
 				build()
 								

@@ -11,6 +11,8 @@ abstract class DockerBuildModuleBase extends BuildModuleBase {
 			def imageName = projectShortName + '_build:' + version
 		
 			pipeline.docker1.build(imageName, '.', 'Dockerfile.build')
+			
+			pipeline.docker1.delete(imageName)
 		}
 	}
 }

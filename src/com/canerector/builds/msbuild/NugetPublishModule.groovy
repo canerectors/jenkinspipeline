@@ -1,7 +1,7 @@
 package com.canerector.builds.msbuild
 
 @groovy.transform.InheritConstructors
-class NugetPublishModule extends BuildModuleBase {
+class NugetPublishModule  extends MSBuildModuleBase {
 		
 	def performBuildInternal(){
 	

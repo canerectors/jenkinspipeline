@@ -19,22 +19,34 @@ class DockerPublishModule extends MSBuildModuleBase {
 				
 				publish()
 			}
-		}
-		
+		}		
 	}
 	
 	def publish(){
-		pipeline.stage('Publish to Docker Registry') {
+		pipeline.stage('Publish') {
 
 			pipeline.bat 'cd ' + buildProject + ' && dotnet publish -o publish_output --configuration Release /p:GenerateAssemblyInfo=false && copy ..\\Dockerfile publish_output'
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			
-			def imageName = getImageName(projectShortName, version)
+			def imageName = pipeline.docker.getImageFullName(projectShortName, version)
+			def imageLatestName = pipeline.docker.getImageFullName(projectShortName, branch)
 			
-			buildAndPush(projectShortName, buildProject + '\\publish_output\\.')
-
-			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(getRegistryUrl(projectShortName), imageName)
+			def dockerContextPath = buildProject + '\\publish_output\\.'
+			
+			pipeline.docker.build(imageName, dockerContextPath)
+			
+			pipeline.docker.tag(imageName, imageLatestName)
+			
+			pipeline.docker.publish(imageName)
+			pipeline.docker.publish(imageLatestName)
+			
+			pipeline.docker.delete(imageName)
+			pipeline.docker.delete(imageLatestName)
+			
+			//buildAndPush(projectShortName, dockerContextPath)
+			
+			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(pipeline.docker.getRegistryUrl(projectShortName), imageName)
 				
 			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
 		}
@@ -42,14 +54,6 @@ class DockerPublishModule extends MSBuildModuleBase {
 	
 	def buildAndPush(projectShortName, dockerFilePath){
 		def dockerHost = pipeline.env.DOCKER_HOST
-		
-		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD}"
-		}
-		
-		pipeline.withCredentials([pipeline.usernamePassword(credentialsId: 'docker_canerectors_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-			pipeline.bat 'docker login -u ' + "${pipeline.USER_NAME}" + ' -p ' + "${pipeline.PASSWORD} registry.recursive.co"
-		}	
 		
 		def dockerCommand = 'docker -H ' + dockerHost
 
@@ -62,13 +66,5 @@ class DockerPublishModule extends MSBuildModuleBase {
 		
 		pipeline.bat dockerCommand + ' rmi ' + imageName
 		pipeline.bat dockerCommand + ' rmi ' + latestImageName
-	}
-	
-	def getImageName(imageName, tag = 'latest'){
-		return 'registry.recursive.co/canerectors/' + imageName + ':' + tag
-	}
-	
-	def getRegistryUrl(imageName){
-		return 'https://registry.recursive.co:444/repository/canerectors/' + imageName
 	}
 }

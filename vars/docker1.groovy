@@ -3,7 +3,7 @@
 def build(imageName, dockerFilePath, dockerfile = null){
 	dockerHost = "${env.DOCKER_HOST}"
 
-	dockerCommand = 'docker -H ' + dockerHost + + ' build -t '
+	dockerCommand = 'docker -H ' + dockerHost + ' build -t '
 	
 	if(dockerfile){
 		dockerCommand = dockerCommand + '-f ' + dockerfile + ' '

@@ -29,24 +29,24 @@ class DockerPublishModule extends MSBuildModuleBase {
 			
 			def projectShortName = projectName.replace('CanErectors.', '').toLowerCase()
 			
-			def imageName = pipeline.docker.getImageFullName(projectShortName, version)
-			def imageLatestName = pipeline.docker.getImageFullName(projectShortName, branch)
+			def imageName = pipeline.docker1.getImageFullName(projectShortName, version)
+			def imageLatestName = pipeline.docker1.getImageFullName(projectShortName, branch)
 			
 			def dockerContextPath = buildProject + '\\publish_output\\.'
 			
-			pipeline.docker.build(imageName, dockerContextPath)
+			pipeline.docker1.build(imageName, dockerContextPath)
 			
-			pipeline.docker.tag(imageName, imageLatestName)
+			pipeline.docker1.tag(imageName, imageLatestName)
 			
-			pipeline.docker.publish(imageName)
-			pipeline.docker.publish(imageLatestName)
+			pipeline.docker1.publish(imageName)
+			pipeline.docker1.publish(imageLatestName)
 			
-			pipeline.docker.delete(imageName)
-			pipeline.docker.delete(imageLatestName)
+			pipeline.docker1.delete(imageName)
+			pipeline.docker1.delete(imageLatestName)
 			
 			//buildAndPush(projectShortName, dockerContextPath)
 			
-			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(pipeline.docker.getRegistryUrl(projectShortName), imageName)
+			def slackFormattedRegistryUrl = pipeline.slack.getMessageStringForUrl(pipeline.docker1.getRegistryUrl(projectShortName), imageName)
 				
 			sendSlackMessage('Docker Image: ' + slackFormattedRegistryUrl + ' pushed to registry.')
 		}

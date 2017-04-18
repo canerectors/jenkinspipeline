@@ -1,3 +1,5 @@
+//renamed docker1.groovy to avoid conflicting with built-in jenkins docker plugin
+
 def build(imageName, dockerFilePath){
 	dockerHost = "${env.DOCKER_HOST}"
 

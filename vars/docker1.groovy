@@ -22,6 +22,14 @@ def publish(imageName){
 	bat dockerCommand + ' push ' + imageName
 }
 
+def run(imageName, runArgs = "", command = ""){
+	dockerHost = "${env.DOCKER_HOST}"
+
+	dockerCommand = 'docker -H ' + dockerHost
+
+	bat dockerCommand + ' run --rm ' + runArgs + imageName + ' ' + command
+}
+
 def delete(imageName){
 	dockerHost = "${env.DOCKER_HOST}"
 

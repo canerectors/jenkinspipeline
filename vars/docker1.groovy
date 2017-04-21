@@ -27,7 +27,7 @@ def run(imageName, runArgs = "", command = ""){
 
 	dockerCommand = 'docker -H ' + dockerHost
 
-	bat dockerCommand + ' run --rm ' + runArgs + imageName + ' ' + command
+	bat dockerCommand + ' run --rm ' + runArgs + ' ' + imageName + ' ' + command
 }
 
 def delete(imageName){

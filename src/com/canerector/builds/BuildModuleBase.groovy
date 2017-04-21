@@ -52,7 +52,7 @@ abstract class BuildModuleBase implements Serializable {
 		pipeline.timestamps{
 			try{
 				sendSlackMessage('started for project: ' + slackFormattedGitHubUrl + ' ' + consoleUrl)		
-				echo pipeline.build.getChangeString()
+				pipeline.echo pipeline.build.getChangeString()
 				performBuildInternal()
 				
 				pipeline.manager.addShortText("v" + version)	

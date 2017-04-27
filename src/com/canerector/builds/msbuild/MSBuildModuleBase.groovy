@@ -12,7 +12,7 @@ abstract class MSBuildModuleBase extends com.canerector.builds.BuildModuleBase {
 	
 	def build(){
 		pipeline.stage('Build') {
-			pipeline.bat 'cd ' + buildProject + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false /p:DebugType=pdbonly'
+			pipeline.bat 'cd ' + buildProject + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false /p:DebugType=pdbonly /p:Optimize=true'
 		}
 	}
 	

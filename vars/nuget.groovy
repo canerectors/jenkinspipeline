@@ -17,11 +17,18 @@ def publishSymbols(packageName = '*symbols.nupkg') {
 }
 
 def pack(projectName, packageVersion) {
-	bat 'dotnet pack ' + projectName + ' -o .. -c Release --include-source --no-build /P:GenerateAssemblyInfo=false /P:PackageVersion=' + packageVersion
+	bat 'dotnet pack ' + projectName + ' -o .. -c Release --include-source --no-build /P:PackageVersion=' + packageVersion
 }
 
 def getFeedUrl(projectName){
 	return 'https://www.myget.org/feed/canerectors/package/nuget/' + projectName
+}
+
+def getSymbolFeedUrl(){
+	withCredentials([string(credentialsId: 'nuget-api-key', variable: 'API_KEY')]) {
+		return 'https://www.myget.org/F/canerectors/auth/' + ${API_KEY} + '/symbols'
+    }
+	
 }
 
 return this;

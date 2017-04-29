@@ -15,6 +15,8 @@ class DockerPublishModule extends MSBuildModuleBase {
 				build()
 				tests()
 				
+				symbols()
+				
 				sendSlackMessage('project: ' + slackFormattedGitHubUrl + " version: *" + version + "* built successfully.")
 				
 				publish()
@@ -24,11 +26,9 @@ class DockerPublishModule extends MSBuildModuleBase {
 	
 	def publish(){
 		pipeline.stage('Publish') {
-
-			pipeline.bat 'cd ' + buildProject + ' && dotnet publish -o publish_output --configuration Release /p:GenerateAssemblyInfo=false && copy ..\\Dockerfile publish_output'
-			
-			
-			
+			//TODO check for publish_output folder and run dotnet publish if it doesn't exist
+			pipeline.bat 'cd ' + buildProject + ' && copy ..\\Dockerfile publish_output'
+						
 			def imageName = pipeline.docker1.getImageFullName(projectShortName, version)
 			def imageLatestName = pipeline.docker1.getImageFullName(projectShortName, branch)
 			

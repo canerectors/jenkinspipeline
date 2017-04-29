@@ -12,7 +12,10 @@ abstract class MSBuildModuleBase extends com.canerector.builds.BuildModuleBase {
 	
 	def build(){
 		pipeline.stage('Build') {
-			pipeline.bat 'cd ' + buildProject + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false /p:DebugType=pdbonly /p:Optimize=true'
+		//	pipeline.bat 'cd ' + buildProject + ' && dotnet build --no-incremental -c Release /p:GenerateAssemblyInfo=false /p:DebugType=pdbonly /p:Optimize=true'
+		
+			pipeline.bat 'cd ' + buildProject + ' && dotnet publish -o publish_output --configuration Release /p:GenerateAssemblyInfo=false /p:DebugType=pdbonly'
+					
 		}
 	}
 	
@@ -34,5 +37,11 @@ abstract class MSBuildModuleBase extends com.canerector.builds.BuildModuleBase {
 		}
 		else
 			pipeline.echo 'No tests found.'
+	}
+	
+	def symbols(){
+		pipeline.stage('Symbols') {
+			pipeline.bat 'cd ' + buildProject + '\\publish_output && powershell -noprofile -command Get-Symbols.ps1' c:/symbols pipelile.nuget.getSymbolFeedUrl()
+		}
 	}
 }

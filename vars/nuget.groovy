@@ -26,7 +26,7 @@ def getFeedUrl(projectName){
 
 def getSymbolFeedUrl(){
 	withCredentials([string(credentialsId: 'nuget-api-key', variable: 'API_KEY')]) {
-		return 'https://www.myget.org/F/canerectors/auth/' + ${API_KEY} + '/symbols'
+		return 'https://www.myget.org/F/canerectors/auth/' + env.API_KEY + '/symbols'
     }
 	
 }

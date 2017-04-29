@@ -41,7 +41,7 @@ abstract class MSBuildModuleBase extends com.canerector.builds.BuildModuleBase {
 	
 	def symbols(){
 		pipeline.stage('Symbols') {
-			pipeline.bat 'cd ' + buildProject + '\\publish_output && powershell -noprofile -command Get-Symbols.ps1 c:/symbols' + ' ' + pipelile.nuget.getSymbolFeedUrl()
+			pipeline.bat 'cd ' + buildProject + '\\publish_output && powershell -noprofile -command Get-Symbols.ps1 c:/symbols' + ' ' + pipeline.nuget.getSymbolFeedUrl()
 		}
 	}
 }
